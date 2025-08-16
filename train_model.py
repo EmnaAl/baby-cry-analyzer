@@ -13,7 +13,7 @@ from datetime import datetime
 def create_sample_dataset():
     """Create sample dataset structure if it doesn't exist."""
     dataset_path = "dataset"
-    categories = ['hungry', 'pain', 'need_to_change', 'tired', 'attention']
+    categories = ['hungry', 'pain', 'need_to_change', 'tired']
     
     if not os.path.exists(dataset_path):
         os.makedirs(dataset_path)
@@ -47,7 +47,7 @@ def load_dataset(dataset_path: str = "dataset"):
     labels = []
     file_paths = []
     
-    categories = ['hungry', 'pain', 'need_to_change', 'tired', 'attention']
+    categories = ['hungry', 'pain', 'need_to_change', 'tired']
     
     print("Loading dataset and extracting features...")
     

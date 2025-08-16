@@ -64,15 +64,6 @@ CATEGORIES = {
             'Dim the lights',
             'Play soft, soothing music or white noise'
         ]
-    },
-    'attention': {
-        'description': 'Baby wants attention or comfort',
-        'recommendations': [
-            'Pick up and cuddle the baby',
-            'Talk or sing to the baby',
-            'Try gentle play or interaction',
-            'Check if baby needs burping'
-        ]
     }
 }
 

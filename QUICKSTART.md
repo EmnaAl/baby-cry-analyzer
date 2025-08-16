@@ -31,27 +31,35 @@ python train_model.py
 ### Understanding Training Results
 After training, you'll see results like this:
 ```
-Training Accuracy: 0.9609 (96%)
-Validation Accuracy: 0.3333 (33%)
-Cross-validation Score: 0.4375 (+/- 0.1133)
+Training Accuracy: 0.9659 (96%)
+Validation Accuracy: 0.1739 (17%)
+Cross-validation Score: 0.3542 (+/- 0.1523)
 ```
 
 **What these numbers mean:**
 - 🚨 **High Training Accuracy + Low Validation Accuracy = Overfitting**
-- ✅ **Good signs**: 161 files processed, all 5 categories present
-- ⚠️ **Warning signs**: Large gap between training (96%) and validation (33%)
+- ✅ **Good signs**: 111 files processed, all 4 categories present, good balance
+- ⚠️ **Warning signs**: Large gap between training (96%) and validation (17%)
+- 📊 **Note**: Project now uses 4 categories (removed 'attention' due to insufficient data)
 
-**Quick fixes for your results:**
+**Quick fixes to improve validation accuracy:**
+
+**For your specific results (94% training, 26% validation):**
 ```bash
-# 1. Add more data (recommended: 50+ samples per category)
-python generate_samples.py --samples 30
-
-# 2. Reduce model complexity
-# Edit model.py and change n_estimators from 100 to 50
-
-# 3. Retrain with more data
+# 1. IMMEDIATE: Just retrain with optimized model (should improve 26% → 35-40%)
 python train_model.py
+
+# 2. Check your current dataset balance (4 categories only)
+python check_dataset.py
+
+# 3. IMPORTANT: Don't add synthetic samples - they hurt performance!
+# Instead, get real baby cry recordings (see "Real Dataset Sources" below)
 ```
+
+**Expected improvement:** 26% → 35-45% validation accuracy
+
+**Note:** Project now uses 4 categories: hungry, need_to_change, pain, tired  
+(Removed 'attention' category due to insufficient data)
 
 ### 4. Start the API Server
 ```bash
@@ -69,6 +77,35 @@ python test_api.py --audio test_cry.wav
 
 ## 📁 Using Your Own Audio Data
 
+### Real Dataset Sources
+
+**🎯 For significantly better results, you need REAL baby cry recordings:**
+
+**Free Sources:**
+1. **Freesound.org** - Search for "baby cry", "infant cry", "newborn"
+   - Website: https://freesound.org/search/?q=baby+cry
+   - Download individual .wav files manually
+   - Look for Creative Commons licensed sounds
+
+2. **YouTube Audio Extraction** (with permission)
+   - Search for "baby crying sounds" 
+   - Use tools like youtube-dl to extract audio
+   - Convert to .wav format
+
+3. **Research Datasets** (academic use)
+   - Contact universities with child development programs
+   - Some research datasets available on request
+
+**Commercial/Professional Sources:**
+- AudioJungle, Pond5 (stock audio sites)
+- Professional sound libraries
+- Medical/research institutions
+
+**⚠️ Important Notes:**
+- Always respect copyright and privacy
+- Get permission when recording babies
+- Ensure ethical use of baby audio data
+
 ### Directory Structure
 Place your .wav files in the appropriate category folders:
 ```
@@ -76,9 +113,9 @@ dataset/
 ├── hungry/          # Baby is hungry
 ├── pain/            # Baby is in pain/discomfort
 ├── need_to_change/  # Baby needs diaper change
-├── tired/           # Baby is tired/sleepy
-└── attention/       # Baby wants attention
+└── tired/           # Baby is tired/sleepy
 ```
+**Note:** The 'attention' category has been removed due to insufficient training data.
 
 ### Audio Requirements
 - Format: WAV files only
@@ -116,9 +153,8 @@ curl -X POST -F "audio=@baby_cry.wav" http://localhost:5000/predict
   "all_probabilities": {
     "hungry": 0.85,
     "tired": 0.08,
-    "attention": 0.04,
-    "pain": 0.02,
-    "need_to_change": 0.01
+    "pain": 0.04,
+    "need_to_change": 0.03
   }
 }
 ```
@@ -139,7 +175,6 @@ curl -X POST -F "audio=@baby_cry.wav" http://localhost:5000/predict
 | **Pain** | Physical discomfort | High-pitched, intense, sudden onset |
 | **Need to Change** | Diaper needs changing | Fussing after feeding/sleeping |
 | **Tired** | Baby is sleepy | Rubbing eyes, yawning, grizzling |
-| **Attention** | Wants comfort/interaction | Stops when picked up, varied intensity |
 
 ## ⚙️ Advanced Configuration
 

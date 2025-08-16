@@ -30,13 +30,14 @@ class BabyCryClassifier:
         self.scaler = StandardScaler()
         self.label_encoder = LabelEncoder()
         self.feature_names = None
-        self.classes = ['attention', 'hungry', 'need_to_change', 'pain', 'tired']
+        self.classes = ['hungry', 'need_to_change', 'pain', 'tired']
         
         # Initialize model based on type
         if model_type == 'random_forest':
             self.model = RandomForestClassifier(
-                n_estimators=100,
-                max_depth=10,
+                n_estimators=50,
+                max_depth=5,
+                min_samples_split=10,
                 random_state=42,
                 class_weight='balanced'
             )
